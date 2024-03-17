@@ -31,19 +31,19 @@ def create_new_character(gamer_tag):
 
     character_name = input("Enter character name: ")
     player_race = input("Are you a human, dwarf, or elf? (human/dwarf/elf): ").lower()
-    player_category = input(f"Is your {player_race} a ranged {player_race} or a close combat {player_race}? (ranged/close combat): ").lower()
-    if player_category == "close combat":
+    player_category = input(f"Is your {player_race} a ranged {player_race} or a close combat {player_race}? (ranged/close_combat): ").lower()
+    if player_category == "close_combat":
         player_class = input("Are you a barbarian with increased attack power and less intelligence, a warrior with balanced stats, or a rogue with increased intelligence and less attack power? (barbarian/warrior/rogue): ").lower()
         if player_class == "barbarian":
-            weapon_skill = input(f"Will your {gamer_tag} be skilled with axes, swords, or hammers? (axes/swords/hammers): ").lower()
+            weapon_skill = input(f"Will your {character_name} be skilled with axes, swords, or hammers? (axes/swords/hammers): ").lower()
         elif player_class == "warrior":
-            weapon_skill = input(f"Will your {gamer_tag} be skilled with longswords, swords, or daggers? (longswords/swords/daggers): ").lower()
+            weapon_skill = input(f"Will your {character_name} be skilled with longswords, swords, or daggers? (longswords/swords/daggers): ").lower()
     elif player_category == "ranged":
         player_class = input(f"Are you an archer with increased intelligence and less attack power or a dead shot with increased attack power and less intelligence? (archer/dead shot): ").lower()
         if player_class == "archer":
-            weapon_skill = input(f"Will your {gamer_tag} be skilled with longbows, throwing daggers, or shortbows? (longbows/throwing daggers/shortbows): ").lower()
+            weapon_skill = input(f"Will your {character_name} be skilled with longbows, throwing daggers, or shortbows? (longbows/throwing daggers/shortbows): ").lower()
         elif player_class == "dead shot":
-            weapon_skill = input(f"Will your {gamer_tag} be skilled with crossbows, slings, or magic bows? (crossbows/slings/magic bows): ").lower()
+            weapon_skill = input(f"Will your {character_name} be skilled with crossbows, slings, or magic bows? (crossbows/slings/magic bows): ").lower()
 
     return [gamer_tag, character_name, player_race, player_category, player_class, weapon_skill]
 
@@ -93,21 +93,29 @@ def main():
             print(character_data)
             save_player_data(gamer_folder_path, character_data)
     else:
-        print(f"Characters found for '{gamer_tag}':")
-        for character_file in character_files:
-            # Extract character name from the file name
-            character_name = os.path.splitext(character_file)[0]
-            print(f"Loading character: {character_name}")
-            
-            # Load character data
-            character_data = load_player_data(gamer_folder_path, character_name)
-            
-            # Check if character data is loaded successfully
-            if character_data is not None:
-                # Process or use character data here
-                print_character_data(character_data)
-            else:
-                print(f"Failed to load character data for '{character_name}'")
+        print(f"{num_characters} characters found for '{gamer_tag}':")
+
+        dowhat = input(f"so you have {num_characters} setup, what do you want to do? [ ADD(a) SHOW(s)]")
+        if dowhat == "a":
+            character_data = create_new_character(gamer_tag)
+            print(character_data)
+            save_player_data(gamer_folder_path, character_data)
+        elif dowhat == "s":
+            for character_file in character_files:
+                # Extract character name from the file name
+                character_name = os.path.splitext(character_file)[0]
+                print(f"Loading character: {character_name}")
+                
+                # Load character data
+                character_data = load_player_data(gamer_folder_path, character_name)
+                
+                # Check if character data is loaded successfully
+                if character_data is not None:
+                    # Process or use character data here
+                    print_character_data(character_data)
+                else:
+                    print(f"Failed to load character data for '{character_name}'")
+                
 
 
 
