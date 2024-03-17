@@ -90,12 +90,13 @@ def main():
         for i in range(how_many):
             print(f"Creating {i + 1} character(s):")
             character_data = create_new_character(gamer_tag)
-            print(character_data)
             save_player_data(gamer_folder_path, character_data)
+            print_character_data(character_data)
     else:
         print(f"{num_characters} characters found for '{gamer_tag}':")
 
-        dowhat = input(f"so you have {num_characters} setup, what do you want to do? [ ADD(a) SHOW(s)]")
+    while True:
+        dowhat = input(f"so you have {num_characters} setup, what do you want to do? [ ADD(a) SHOW(s) SELECT(t)]")
         if dowhat == "a":
             character_data = create_new_character(gamer_tag)
             print(character_data)
@@ -115,7 +116,9 @@ def main():
                     print_character_data(character_data)
                 else:
                     print(f"Failed to load character data for '{character_name}'")
-                
+        elif dowhat == "t":
+            chose = input("which character do you want to use?")
+            break
 
 
 
@@ -123,8 +126,8 @@ def main():
 
     #--------------initiate story-----------------------------------------------------
     # Continue with your story or additional code here
-    #print("You wake up on a shore not remebering anything")
-    #player_option1 = input("You see a small hut with the smell of food making you start to feel hungery. Or their is a nearby cave that might have food. What do you do? (walk over/go to cave)")
+    print("You wake up on a shore not remebering anything")
+    player_option1 = input("You see a small hut with the smell of food making you start to feel hungery. Or their is a nearby cave that might have food. What do you do? (walk over/go to cave)")
 
 if __name__ == "__main__":
     main()
