@@ -17,8 +17,9 @@ def save_player_data(player_name, character_name, data):
             file.write(line + '\n')
 
 def create_new_character(player_name):
-    character_name = input("Enter character name: ")
     loaded_data = load_player_data(player_name, character_name)
+
+    character_name = input("Enter character name: ")
     if loaded_data:
         print("Loading existing character data...")
         return loaded_data
@@ -27,17 +28,6 @@ def create_new_character(player_name):
         gamer_tag = input("Please enter your gamer tag: ")
         answer = input(f"So your gamer tag is {gamer_tag}? (yes/no) ")
 
-        #-------------------- get feedback on gamer tag---------------------------
-        while True:
-            gamer_tag = input("Please enter your gamer tag: ")
-            answer = input(f"Is '{gamer_tag}' your gamer tag? (yes/no): ").lower()
-            if answer.startswith('y'):
-                print("Gamer tag verified.")
-                break
-            elif answer.startswith('n'):
-                print("Please re-enter your gamer tag.")
-            else:
-                print("Sorry, response must be yes or no.")
 
         #---------------------- proceed with game ---------------------------------
         print(f"Hello {gamer_tag}")
@@ -59,15 +49,60 @@ def create_new_character(player_name):
     return [gamer_tag, player_race, player_category, player_class, weapon_skill]
 
 def main():
-    player_name = input("Enter player name: ")
-    characters = int(input("How many characters do you want to create?: "))
-    for i in range(characters):
-        print(f"Creating character {i + 1}...")
-        character_data = create_new_character(player_name)
-        save_player_data(player_name, f"character_{i + 1}", character_data)
+    #------------get the current directory and find the profiles folder---------------
+    # get working directory
+    wdir = os.path.dirname(os.path.abspath(__file__))
+    # create reference to profiles folder
+    profiles_folder_path = os.path.join(wdir, "profiles")
+    # Check if "profiles" folder exists
+    if not os.path.exists(profiles_folder_path):
+        # If it doesn't exist, create it
+        os.makedirs(profiles_folder_path)
+
+
+    # ---------------retrieve or setup new game---------------------------------
+    while True:
+        gamer_tag = input("Please enter your gamer tag: ")
+        answer = input(f"Is '{gamer_tag}' your gamer tag? (yes/no): ").lower()
+        if answer.startswith('y'):
+            print("Gamer tag verified.")
+            break
+        elif answer.startswith('n'):
+            print("Please re-enter your gamer tag.")
+        else:
+            print("Sorry, response must be yes or no.")
+
+    # get gamer profiles location
+    gamer_folder_path = os.path.join(wdir, gamer_tag)
+    if os.path.exists(gamer_folder_path):
+        print(f"Found existing profile for '{gamer_tag}'.")
+        # Do something with the existing folder
+    else:
+        print(f"No profile found for '{gamer_tag}'. Creating one...")
+        os.makedirs(gamer_folder_path)
+
+    #--------------get number of character files--------------------------------
+    character_files = os.listdir(gamer_folder_path)
+    num_characters = len(character_files)
+
+    # Print names of each character found, if they exist
+    if num_characters > 0:
+        print(f"Characters found for '{gamer_tag}':")
+        for character_file in character_files:
+            print(character_file)
+    else:
+        how_many = input(f"No characters found for '{gamer_tag}'. How many do you want to create?")
+        for i in range(how_many):
+            cname = input(f"Create a name for character {i + 1}:")
+            character_data = create_new_character(cname)
+            save_player_data(player_name, f"character_{i + 1}", character_data)
+
+    #-------------decide which character to play with----------------------------
+
+    #--------------initiate story-----------------------------------------------------
     # Continue with your story or additional code here
-    print("You wake up on a shore not remebering anything")
-    player_option1 = input("You see a small hut with the smell of food making you start to feel hungery. Or their is a nearby cave that might have food. What do you do? (walk over/go to cave)")
+    #print("You wake up on a shore not remebering anything")
+    #player_option1 = input("You see a small hut with the smell of food making you start to feel hungery. Or their is a nearby cave that might have food. What do you do? (walk over/go to cave)")
 
 if __name__ == "__main__":
     main()
