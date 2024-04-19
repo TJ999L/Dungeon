@@ -125,9 +125,15 @@ def main():
     #-------------decide which character to play with----------------------------
 
     #--------------initiate story-----------------------------------------------------
-    # Continue with your story or additional code here
+    #----------- Continue with your story or additional code here-----------------
     print("You wake up on a shore not remebering anything")
-    player_option1 = input("You see a small hut with the smell of food making you start to feel hungery. Or their is a nearby cave that might have food. What do you do? (walk over/go to cave)")
+    player_option1 = input("You see a small hut with the smell of food making you start to feel hungery. Or their is a nearby cave that might have food. What do you do? [ GO TO HUT(h) GO TO CAVE(c)]")
+    if player_option1 == "c":
+        print(f"{gamer_tag} walks over to the cave and finds nothing.")
+    elif player_option1 == "h":
+        print("You walk over to the hut and knock on the door.")
+        print("A man awnsers the door and tells you to come in. You decide to listen to him and you enter his cozy house.")
+
 
 if __name__ == "__main__":
     main()
