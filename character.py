@@ -97,6 +97,19 @@ Weapons = [
 
 
 def getDisplay(obj, singular=True):
+    """
+    Use an object's (or array of objects') `display` property to get a display name.
+    If `display` is an array, use the first item if singular, the 2nd if plural.
+    If there's only one item in the array, use that word for all cases.
+    If `display` is a *string*, return that for singular or automatically add an `s` at the end for plural
+    """
+
+    if type(obj) == list:
+        output = []
+        for item in obj:
+            output.append(getDisplay(item, singular))
+        return output
+
     field = obj["display"]
     fieldType = type(obj["display"])
     if fieldType == list:
@@ -106,76 +119,73 @@ def getDisplay(obj, singular=True):
         else:
             return field[0] if singular else field[1]
     else:
-        return field+"s"
+        return field+("s" if not singular else "")
 
-def getDisplaySingular(obj):
-    return getDisplay(obj, True)
-
-def getDisplayPlural(obj):
-    return getDisplay(obj, False)
-
-def inputValidateChoice(message, items, singular=True):
+def inputValidateChoice(message, items, singular=True, doubleCheck=True):
+    """
+    Let the user select from an array of *objects* using number keys.
+    Returns the users final selection (the object from the list).
+    You can optionally `doubleCheck=True` to add a confimration message
+    """
     options = []
     for (i, item) in enumerate(items):
         options.append(f"({ (i+1) }){getDisplay(item, singular)}")
 
-    query = f"{message} {englishJoin(options, False)} ?"
-
-    choice = input(query)
+    choice = input(f"{message} {englishJoin(options, False)} ?")
     try:
         choiceInt = int(choice)
-        lookup = items[choiceInt]
-        return lookup
+        choiceObject = items[choiceInt-1]
+        choiceName = getDisplay(choiceObject, singular)
+        finalMessage = f"You chose {choiceName}."
+        if doubleCheck :
+            confirm = input(finalMessage + " Are you sure? (y/n)").lower()
+            if confirm[0] == "y":
+                print(f"You settle on {choiceName}.")
+                return choiceObject
+            else:
+                inputValidateChoice(message, items, singular, doubleCheck)
+        else:
+            print(finalMessage)
+        return choiceObject
     except:
         print("Please select one of the options")
-        inputValidateChoice(message, items, singular)
-    
-def collectField(parts, extractor):
-    """ Iterate over an array of objects, returning a new array of fields returned by the extractor function """
-    output = []
-    for part in parts:
-        output.append(extractor(part))
-    return output
+        inputValidateChoice(message, items, singular, doubleCheck)
+
 
 def englishJoin(parts, inclusive=True):
-    """ Turn an array into normal oxford comma text """
+    """ Turn an array into normal oxford comma plain text """
     word = "and" if inclusive else "or"
-    if len(parts) < 3:
+    count = len(parts)
+    if count < 2:
+        return "".join(parts)
+    if count < 3:
         return (" "+ word +" ").join(parts)
     else:
         return ", ".join(parts[:-1]) + ", " + word + " " + parts[-1]
 
 
+def Create():
+    
+    player = {
+        "name": "",
+        "race": "",
+        "class": "",
+        "spec": ""
+    }
 
-# def Create():
-#     
-#     player = {
-#         "name": "",
-#         "race": "",
-#         "class": "",
-#         "spec": ""
-#     }
-# 
-#     input(f"Enter a world of {englishJoin(collectField(Races, getDisplayPlural))}. (press any key)") 
-# 
-#     for race in Races:
-#         input(race["description"] + "(continue)")
-# 
-#     message = "Are you a "
-#     for (i, race) in enumerate(Races):
-#         message += f"({ (i+1) }){race["display"][0]} "
-# 
-#     index = int(input(message)) - 1
-#     race = Races[index]
-#     player["race"] = race["id"]
-# 
-#     player["name"] = input("Enter character name: ")
-# 
-#     print(f"You are {player["name"]}, of the {race["display"][1]}.")
-#     input("Enter character name: ")
-# 
-#     return player
+    # tell about each of the Races
+    input(f"Enter a world of { englishJoin(getDisplay(Races, False)) }. (press any key)") 
+    for race in Races:
+        input(race["description"] + " (continue)")
+
+    race = inputValidateChoice("Are you a", Races, doubleCheck=True)
+    player["race"] = race["id"]
+
+    player["name"] = input("Enter character name: ")
+
+    print(f"You are { player['name'] }, of the { getDisplay(race, False) }.")
+    return player
 
 
 if __name__ == "__main__":
-    inputValidateChoice("Choose your race", Races)
+    Create()
