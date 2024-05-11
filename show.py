@@ -68,14 +68,7 @@ def englishJoin(parts, inclusive=True):
         return ", ".join(parts[:-1]) + ", " + word + " " + parts[-1]
 
 
-def Create():
-    
-    player = {
-        "name": "",
-        "race": "",
-        "class": "",
-        "spec": ""
-    }
+def CharacterCreate(char, phase):
 
     # tell about each of the Races
     input(f"Enter a world of { englishJoin(getDisplay(Races, False)) }. (press any key)") 
@@ -83,22 +76,13 @@ def Create():
         input(race["description"] + " (continue)")
 
     race = inputValidateChoice("Are you a", Races, doubleCheck=True)
-    player["race"] = race["id"]
-
-    player["name"] = input("Enter character name: ")
-
-    print(f"You are { player['name'] }, of the { getDisplay(race, False) }.")
-    return player
-
-
-
-def CharacterCreate(char, phase):
+    char["race"] = race["id"]
+    char["name"] = input("Enter character name: ")
+    print(f"You are { char['name'] }, of the { getDisplay(race, False) }.")
 
     choice = inputValidateChoice("what next", phase["step"])
-
     char["phase"] = choice["id"]
 
-    print("character create screen")
 
 def Quit(char, phase):
 

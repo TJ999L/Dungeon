@@ -5,7 +5,8 @@
         "has": [],
         "show": "CharacterCreate",
         "step": [
-            {"id": "start", "display":"Start Game"}
+            {"id": "start", "display":"Start Game"},
+            {"id": "sel", "display":"Change Character"}
         ]
     },
     {
