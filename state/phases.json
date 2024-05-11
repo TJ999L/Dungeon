@@ -13,7 +13,7 @@
         "id": "start",
         "display": "Main Room",
         "has": [],
-        "show": "CharacterCreate",
+        "show": "Quit",
         "step": [
         ]
     }
