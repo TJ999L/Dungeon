@@ -1,0 +1,19 @@
+[
+    {
+        "id": "sel",
+        "display": "Character Create",
+        "has": [],
+        "show": "CharacterCreate",
+        "step": [
+            {"id": "start", "display":"Start Game"}
+        ]
+    },
+    {
+        "id": "start",
+        "display": "Main Room",
+        "has": [],
+        "show": "CharacterCreate",
+        "step": [
+        ]
+    }
+]
