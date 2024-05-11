@@ -29,13 +29,12 @@ def update():
     render = getattr(Show, phase["show"])
     result = render(Char, phase)
 
-    StateSave()
-
     if result:
         exit()
     else:
+        StateSave()
         update()
 
-
-StateLoad()
-update()
+if __name__ == "__main__":
+    StateLoad()
+    update()

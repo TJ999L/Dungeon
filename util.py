@@ -4,6 +4,10 @@ def lookup(list, id):
             return item
     return False
 
+def takeStep(char, phase):
+    choice = inputValidateChoice("what next", phase["step"])
+    char["phase"] = choice["id"]
+
 def getDisplay(obj, singular=True):
     """
     Use an object's (or array of objects') `display` property to get a display name.
@@ -29,7 +33,7 @@ def getDisplay(obj, singular=True):
     else:
         return field+("s" if not singular else "")
 
-def inputValidateChoice(message, items, singular=True, doubleCheck=True):
+def inputValidateChoice(message, items, singular=True, doubleCheck=False):
     """
     Let the user select from an array of *objects* using number keys.
     Returns the users final selection (the object from the list).

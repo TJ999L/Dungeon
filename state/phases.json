@@ -13,6 +13,35 @@
         "id": "start",
         "display": "Main Room",
         "has": [],
+        "show": "Main",
+        "step": [
+            {"id":"attic", "display":"Stairs"},
+            {"id":"cave", "display":"Small Hole"}
+        ]
+    },
+    {
+        "id": "cave",
+        "display": "Cave",
+        "has": [],
+        "show": "Cave",
+        "step": [
+            {"id":"start", "display":"Back to Main Room"}
+        ]
+    },
+    {
+        "id": "attic",
+        "display": "Attic",
+        "has": [],
+        "show": "Attic",
+        "step": [
+            {"id":"start", "display":"Back to Main Room"},
+            {"id":"quit", "display":"Jump out the window"}
+        ]
+    },
+    {
+        "id": "quit",
+        "display": "Quit",
+        "has": [],
         "show": "Quit",
         "step": [
         ]
