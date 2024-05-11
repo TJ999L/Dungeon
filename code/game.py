@@ -132,11 +132,15 @@ def main():
         print(f"{gamer_tag} walks over to the cave and finds nothing.")
 
     #elif player_option1 == "h":
-    print("You walk over to the hut and knock on the door.")
+        print("You walk over to the hut and knock on the door.")
+    else:
+        print("That is not an option") 
     print("A man awnsers the door and tells you to come in. You decide to listen to him and you enter his cozy house.")
     print("The man then tells you were you are. He says that you are in a empire called Trellon. He then asks what side you are on and you say that you remember nothing since before you crashed.")
     print("The man tells you about what is going on. He says that there is a rebellion and that they are fighting for a new empire were all are equal. He then states that the empire is trying to find all who disagree with the rebellion and either throw them in the dungeon or murder them.") 
     player_side = input("Later that night 🌙 you remember one of the sides sent you. Which one was it? [ EMPIRE(e) REBELS(e)]")
+    if player_side == "e":
+        ("")
 
 if __name__ == "__main__":
     main()
