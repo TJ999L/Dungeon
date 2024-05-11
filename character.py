@@ -1,4 +1,3 @@
-
 Races = [
     {
         "id": "hum",
@@ -21,15 +20,15 @@ Races = [
 Classes = [
     {
         "id": "mel",
-        "display": ["Melee"],
+        "display": ["Melee", "Melee Fighters"],
     },
     {
         "id": "ran",
-        "display": ["Ranged"],
+        "display": ["Ranged", "Ranged Fighters"],
     },
     {
         "id": "mag",
-        "display": ["Magic"],
+        "display": ["Magic", "Magic Users"],
     }
 ]
 
@@ -37,12 +36,12 @@ Specs = [
     {
         "id": "bar",
         "id_class": "mel",
-        "display": ["Barbarian"]
+        "display": ["Barbarian", "Barbarians"]
     },
     {
         "id": "war",
         "id_class": "mel",
-        "display": ["Warrior"]
+        "display": ["Warrior", ]
     },
     {
         "id": "rog",
@@ -97,51 +96,86 @@ Weapons = [
 
 
 
-def Create():
-    
-    player = {
-        "name": "",
-        "race": "",
-        "class": "",
-        "spec": ""
-    }
-
-
-    def collectField(parts, extractor):
-        """ Iterate over an array of objects, returning a new array of fields returned by the extractor function """
-        output = []
-        for part in parts:
-            output.append(extractor(part))
-        return output
-
-    def englishJoin(parts, inclusive=True):
-        """ Turn an array into normal oxford comma text """
-        word = "and" if inclusive else "or"
-        if len(parts) < 3:
-            return (" "+ word +" ").join(parts)
+def getDisplay(obj, singular=True):
+    field = obj["display"]
+    fieldType = type(obj["display"])
+    if fieldType == list:
+        count = len(field)
+        if count == 1:
+            return field[0]
         else:
-            return ", ".join(parts[:-1]) + ", " + word + " " + parts[-1]
+            return field[0] if singular else field[1]
+    else:
+        return field+"s"
 
-    input(f"Enter a world of {englishJoin(collectField(Races, lambda race: race["display"][1]))}. (press any key)") 
+def getDisplaySingular(obj):
+    return getDisplay(obj, True)
 
-    for race in Races:
-        input(race["description"] + "(continue)")
+def getDisplayPlural(obj):
+    return getDisplay(obj, False)
 
-    message = "Are you a "
-    for (i, race) in enumerate(Races):
-        message += f"({ (i+1) }){race["display"][0]} "
+def inputValidateChoice(message, items, singular=True):
+    options = []
+    for (i, item) in enumerate(items):
+        options.append(f"({ (i+1) }){getDisplay(item, singular)}")
 
-    index = int(input(message)) - 1
-    race = Races[index]
-    player["race"] = race["id"]
+    query = f"{message} {englishJoin(options, False)} ?"
 
-    player["name"] = input("Enter character name: ")
+    choice = input(query)
+    try:
+        choiceInt = int(choice)
+        lookup = items[choiceInt]
+        return lookup
+    except:
+        print("Please select one of the options")
+        inputValidateChoice(message, items, singular)
+    
+def collectField(parts, extractor):
+    """ Iterate over an array of objects, returning a new array of fields returned by the extractor function """
+    output = []
+    for part in parts:
+        output.append(extractor(part))
+    return output
 
-    print(f"You are {player["name"]}, of the {race["display"][1]}.")
-    input("Enter character name: ")
+def englishJoin(parts, inclusive=True):
+    """ Turn an array into normal oxford comma text """
+    word = "and" if inclusive else "or"
+    if len(parts) < 3:
+        return (" "+ word +" ").join(parts)
+    else:
+        return ", ".join(parts[:-1]) + ", " + word + " " + parts[-1]
 
-    return player
+
+
+# def Create():
+#     
+#     player = {
+#         "name": "",
+#         "race": "",
+#         "class": "",
+#         "spec": ""
+#     }
+# 
+#     input(f"Enter a world of {englishJoin(collectField(Races, getDisplayPlural))}. (press any key)") 
+# 
+#     for race in Races:
+#         input(race["description"] + "(continue)")
+# 
+#     message = "Are you a "
+#     for (i, race) in enumerate(Races):
+#         message += f"({ (i+1) }){race["display"][0]} "
+# 
+#     index = int(input(message)) - 1
+#     race = Races[index]
+#     player["race"] = race["id"]
+# 
+#     player["name"] = input("Enter character name: ")
+# 
+#     print(f"You are {player["name"]}, of the {race["display"][1]}.")
+#     input("Enter character name: ")
+# 
+#     return player
 
 
 if __name__ == "__main__":
-    Create()
+    inputValidateChoice("Choose your race", Races)
